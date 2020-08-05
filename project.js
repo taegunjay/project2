@@ -33,7 +33,7 @@ for (let i = 0; i < suits.length; i++) {
       rank: numbers[j],
       value: value[j],
     };
-    console.log(card);
+    // console.log(card);
     deck.push(card);
   }
 }
@@ -53,7 +53,7 @@ let shuffleDeck = function (deck) {
 };
 
 let newCard = shuffleDeck(deck);
-console.log(newCard);
+// console.log(newCard);
 
 //------------- dividing cars to payers--------------//
 
@@ -63,8 +63,8 @@ let player2 = { cards: [] };
 player1.cards = deck.slice(0, 26);
 player2.cards = deck.slice(26, 52);
 
-console.log(player1.cards);
-console.log(player2.cards);
+console.log("player1 cards: " + player1.cards);
+console.log("player2 cards: " + player2.cards);
 
 //-------------- cardgame ----------------------------//
 // players both match the first cards and check value to see who wins. winner takes the card and put them into array last.  other player loose the card.
@@ -81,53 +81,87 @@ function battle(player1, player2) {
 }
 function war(i) {
 
-  console.log("tie");
-  // console.log(player1.cards.length);
-  // console.log(player2.cards.length);
+  console.log("tie round war has been declared");
+  console.log("player1 has " + player1.cards.length);
+  console.log("player2 has " + player2.cards.length);
 
 
-  if (player1.cards.length >= i && player2.cards.length >= i) {
-
+  console.log(i);
+  if (player1.cards.length > i && player2.cards.length > i) {
     // console.log("player2 = " + player2.cards[i].value);
     // console.log("player1 = " + player1.cards[i].value);
     if (player2.cards[i].value > player1.cards[i].value) {
 
-      console.log(player2.cards[i].value);
+      // console.log(player2.cards[i].value);
       let tieLose = player1.cards.splice(0, i + 1);
-      console.log(tieLose);
+      // console.log(tieLose);
       player2.cards = player2.cards.concat(tieLose);
       console.log("player2 win");
-      console.log(player1.cards);
-      console.log(player2.cards);
+      // console.log(player1.cards);
+      // console.log(player2.cards);
     }
 
     else if (player1.cards[i].value > player2.cards[i].value) {
       let tieLose1 = player2.cards.splice(0, i + 1);
-      console.log(tieLose1);
+      // console.log(tieLose1);
       player1.cards = player1.cards.concat(tieLose1);
       console.log("player1 win");
-      console.log(player1.cards);
-      console.log(player2.cards);
+      // console.log(player1.cards);
+      // console.log(player2.cards);
+      return
     }
     else {
-      console.log("!!!!!!!!!!!!!!WARAGAIN!!!!!!!!!!!!!!!!!!!!!!")
-      war(i + 4);
+
+      if (player1.cards.length > i + 4 || player2.cards.length > i + 4) {
+        console.log("!!!!!!!!!!!!!!WARAGAIN!!!!!!!!!!!!!!!!!!!!!!")
+        war(i + 4);
+      }
+      else {
+        if (player1.cards.length < i) {
+          console.log("player2 win");
+          return;
+        }
+        else {
+          console.log("player1 win");
+          return;
+        }
+        return;
+
+      }
+
+
 
     }
   }
+  else if (player1.cards.length < i || player2.cards.length < i
+  ) {
+    if (player1.cards.length < i) {
+      console.log("player2 is winner");
+      let tieLose2 = player1.cards.splice(0, player1.cards.length);
+      player2.cards = player2.cards.concat(tieLose2);
 
-
+      return;
+    }
+    else {
+      console.log("player1 is winnner");
+      let tieLose3 = player2.cards.splice(0, player2.cards.length);
+      player1.cards = player1.cards.concat(tieLose3);
+      return;
+    }
+    return;
+  }
+  return;
 }
-
 function battle() {
 
 
   let playingCard = [];
   let counter = 0;
 
+
   while (player1.cards.length > 0 && player2.cards.length > 0) {
     counter++;
-    if (counter === 4000) {
+    if (counter === 10000) {
       break;
     }
 
@@ -139,21 +173,48 @@ function battle() {
       // console.log(loseCard);
       player1.cards.push(loseCard);
       player1.cards.push(loseCards);
-
-      console.log("player1 win");
+      console.log("player1 played with " + loseCards.rank + " player2 played with " + loseCard.rank);
+      console.log("player1 win round" + counter + " player1 has " + player1.cards.length + "cards left.  player2 has " + player2.cards.length);
       // console.log(player1.cards);
       // console.log(player2.cards);
+
     }
 
     else if (player2.cards[0].value > player1.cards[0].value) {
-      let loseCard1 = player1.cards.shift();
-      let loseCard2 = player2.cards.shift();
       // console.log(loseCard1);
-      player2.cards.push(loseCard2);
-      player2.cards.push(loseCard1);
-      console.log("player2 win");
-      // console.log(player1.cards);
-      // console.log(player2.cards);
+      if (player2.cards.length == 0 || player1.cards.length == 0) {
+        if (player2.cards.length == 0) {
+          console.log("player1 win")
+          return
+        }
+        else {
+          console.log("player2 win")
+          return
+        }
+      }
+      else {
+        if (player2.cards.length == 0 || player1.cards.length == 0) {
+          if (player2.cards.length == 0) {
+            console.log("player1 win")
+            return
+          }
+          else {
+            console.log("player2 win")
+            return
+          }
+        }
+        else {
+          let loseCard1 = player1.cards.shift();
+          let loseCard2 = player2.cards.shift();
+          player2.cards.push(loseCard2);
+          player2.cards.push(loseCard1);
+          console.log("player1 played with " + loseCard1.rank + " player2 played with " + loseCard2.rank);
+          console.log("player2 win round" + counter + " player2 has " + player2.cards.length + "cards left.  player1 has " + player1.cards.length);
+
+          // console.log(player1.cards);
+          // console.log(player2.cards);
+        }
+      }
     }
 
 
@@ -166,12 +227,14 @@ function battle() {
   if (player2.cards.length == 0) {
 
     console.log("player1 is winner!!")
+    return;
   };
   if (player1.cards.length == 0) {
 
     console.log("player2 is winner!!")
+    return;
   };
-  console.log()
+
 
   console.log(counter);
 
